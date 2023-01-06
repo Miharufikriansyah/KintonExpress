@@ -16,6 +16,7 @@ public class PagesController {
     private DashboardPengirim dashboardpengirim;
     private Login login;
     private Home home;
+    private Registration regist;
     
     public PagesController(){
         this.about = new About();
@@ -23,6 +24,7 @@ public class PagesController {
         this.dashboardpengirim = new DashboardPengirim();
         this.login = new Login();
         this.home = new Home();
+        this.regist = new Registration();
     }
     
     public void viewMainPage(){
@@ -31,6 +33,7 @@ public class PagesController {
         this.dashboardadmin.setVisible(false);
         this.dashboardpengirim.setVisible(false);
         this.login.setVisible(false);
+        this.regist.setVisible(false);
     }
     
     public void viewLoginPage(){
@@ -39,6 +42,7 @@ public class PagesController {
         this.dashboardadmin.setVisible(false);
         this.dashboardpengirim.setVisible(false);
         this.login.setVisible(true);
+        this.regist.setVisible(false);
     }
     
     public void viewAboutPage(){
@@ -47,5 +51,24 @@ public class PagesController {
         this.dashboardadmin.setVisible(false);
         this.dashboardpengirim.setVisible(false);
         this.login.setVisible(false);
+        this.regist.setVisible(false);
+    }
+    
+    public void viewDashboardAdmin(){
+        this.home.setVisible(false);
+        this.about.setVisible(false);
+        this.dashboardadmin.setVisible(true);
+        this.dashboardpengirim.setVisible(false);
+        this.login.setVisible(false);
+        this.regist.setVisible(false);
+    }
+    
+    public void viewRegistration(){
+        this.home.setVisible(false);
+        this.about.setVisible(false);
+        this.dashboardadmin.setVisible(false);
+        this.dashboardpengirim.setVisible(false);
+        this.login.setVisible(false);
+        this.regist.setVisible(true);
     }
 }

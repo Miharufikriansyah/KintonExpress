@@ -9,6 +9,10 @@ import com.controllers.PagesController;
 import javax.swing.*;  
 import java.awt.*;  
 import java.awt.event.*;
+import com.user.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,6 +64,11 @@ public class Login extends javax.swing.JFrame implements ActionListener{
         });
 
         jButton2.setText("Login");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,7 +117,26 @@ public class Login extends javax.swing.JFrame implements ActionListener{
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String nama = jTextField1.getText();
+        String id = jTextField2.getText();
+        try {
+            Admin adm = new Admin(nama,com.model.AdminModel.getNoTelp(id),com.model.AdminModel.getGender(id));
+            boolean cek = adm.login(nama, id);
+            if(cek){
+                new PagesController().viewDashboardAdmin();
+                this.setVisible(false);
+            }else{
+                this.showError("Username or ID not match");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,5 +191,13 @@ public class Login extends javax.swing.JFrame implements ActionListener{
         }else if(ae.getSource() == this.jButton2){
             
         }
+    }
+    
+    public void showError(String msg){
+        JLabel label = new JLabel(msg);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.BOTTOM);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        JOptionPane.showMessageDialog(null,label,"Error",JOptionPane.PLAIN_MESSAGE);
     }
 }

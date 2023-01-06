@@ -11,17 +11,17 @@ import com.interfaceable.Authenticable;
  */
 public class User implements Authenticable {
     private String name,no_tlp;
-    private boolean gender;
+    private String gender;
     protected String id;
     
-    public User(String name, String no_tlp, boolean gender){
+    public User(String name, String no_tlp, String gender){
         this.name = name;
         this.no_tlp = no_tlp;
         this.gender = gender;
     }
 
     @Override
-    public void login() {
+    public boolean login(String nama, String id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -36,7 +36,7 @@ public class User implements Authenticable {
     }
 
     @Override
-    public void registration() {
+    public boolean registration(String id, String nama, String no_telp, String gender) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

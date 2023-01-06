@@ -3,19 +3,33 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.user;
+import com.model.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author iolux
  */
 public class Admin extends User{
-    public Admin(String name, String no_tlp, boolean gender){
+    public Admin(String name, String no_tlp, String gender){
         super(name,no_tlp,gender);
     }
     
     @Override
-    public void login(){
-        
+    public boolean login(String nama, String id){
+     
+        try {
+            String name = com.model.AdminModel.getNama(id);
+            String iden = com.model.AdminModel.getId(id);
+            if(name.equals(nama) && iden.equals(id)){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
     
     @Override
@@ -29,8 +43,16 @@ public class Admin extends User{
     }
     
     @Override
-    public void registration(){
-        
+    public boolean registration(String id, String nama, String no_telp, String gender){
+        try{
+            boolean cek = com.model.AdminModel.insertData(id, nama, no_telp, gender);
+            if(cek){
+                return true;
+            }
+        }catch(SQLException e){
+            System.out.println(e);
+        }
+        return false;
     }
     
     @Override

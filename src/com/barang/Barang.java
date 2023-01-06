@@ -9,5 +9,5 @@ package com.barang;
  * @author iolux
  */
 public class Barang {
-
+    
 }

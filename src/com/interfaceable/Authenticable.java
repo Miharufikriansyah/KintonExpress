@@ -9,9 +9,9 @@ package com.interfaceable;
  * @author iolux
  */
 public interface Authenticable {
-    public abstract void login();
+    public abstract boolean login(String nama, String id);
     public abstract void logout();
     public abstract void profile();
-    public abstract void registration();
+    public abstract boolean registration(String id, String nama,String no_telp, String gender);
     public abstract void twoStepVerification();
 }
