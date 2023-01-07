@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.io.Serializable;
 import com.interfaceable.Authenticable;
+import com.helper.FileHelper;
+import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,10 +39,6 @@ public class User implements Authenticable, Serializable{
         return result;
     }
     
-    public boolean insertUser(String id, String nama, int gender, int userType){
-        return false;
-    }
-
     public User.DataUser login(String id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -64,6 +62,35 @@ public class User implements Authenticable, Serializable{
         }
         return null;
     }
+
+    
+    public boolean register(String id, String nama,String no_telp ,int gender, int userType)throws SQLException{
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            String query = "INSERT INTO user(userId,nama,gender,userType,no_telp) VALUES(?,?,?,?,?)";
+            
+            Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/kintonexpress", "root", "");
+            PreparedStatement prepStmt = connect.prepareStatement(query);
+//            prepStmt.setInt(1, Integer.parseInt(nilai));
+            prepStmt.setString(1, id);
+            prepStmt.setString(2, nama);
+            prepStmt.setInt(3, gender);
+            prepStmt.setInt(4, userType);
+            prepStmt.setString(5, no_telp);
+            
+            prepStmt.executeUpdate();
+            
+            connect.close();
+            
+            return true;
+        } catch (ClassNotFoundException E){
+            System.out.println(E);
+        }
+        
+        return false;
+    }
+
 
     @Override
     public void logout() {
@@ -115,4 +142,44 @@ public class User implements Authenticable, Serializable{
         }
         
     }
+    
+    public class Admin implements Serializable{
+        private int type;
+        
+        public Admin() throws ClassNotFoundException {
+            User.DataUser user = FileHelper.loadConfigFromFile();
+            
+            this.type = user.getTypeUser();
+        }
+        
+        
+    }
+    
+    public class Pengirim implements Serializable{
+        private int type;
+        
+        public Pengirim() throws ClassNotFoundException{
+            User.DataUser user = FileHelper.loadConfigFromFile();
+            
+            this.type = user.getTypeUser();
+        }
+        
+        
+        
+    }
+    
+    public class Kurir implements Serializable{
+        private int type;
+        
+        public Kurir() throws ClassNotFoundException{
+            User.DataUser user = FileHelper.loadConfigFromFile();
+            
+            this.type = user.getTypeUser();
+        }
+        
+        
+    }
+    
+    
+
 }

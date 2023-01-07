@@ -9,6 +9,12 @@ import com.helper.FileHelper;
 import com.views.*;
 import java.io.Serializable;
 
+import java.sql.SQLException;
+import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 /**
  *
  * @author iolux
@@ -19,13 +25,21 @@ public class PagesController implements Serializable{
     private DashboardPengirim dashboardpengirim;
     private Login login;
     private Home home;
+
+    private AddBarang addBarang;
+    private ListBarang listBarang;
+    private Registration regist;
+
     private User.DataUser user;
     
-    public PagesController(){
+    public PagesController() throws ClassNotFoundException, SQLException{
         this.about = new About();
         this.dashboardadmin = new DashboardAdmin();
         this.dashboardpengirim = new DashboardPengirim();
         this.login = new Login();
+        this.addBarang = new AddBarang();
+        this.listBarang = new ListBarang();
+        this.regist = new Registration();
         this.home = new Home();
     }
        
@@ -78,10 +92,30 @@ public class PagesController implements Serializable{
         this.login.setVisible(false);
     }
     
+
+    /**
+     *
+     * @throws ClassNotFoundException
+     */
     public void viewUserMenu() throws ClassNotFoundException{
+        ExecutorService theardpool = Executors.newCachedThreadPool();
         
-        User.DataUser rs = FileHelper.loadConfigFromFile();
+        Future<User.DataUser> futureTask = theardpool.submit(() -> FileHelper.loadConfigFromFile());
+//        User.DataUser rs = FileHelper.loadConfigFromFile();
+
+        while (!futureTask.isDone()) {
+            System.out.println("Loadin Session..."); 
+        }
         
+        User.DataUser rs = null;
+        try {
+            rs = futureTask.get();
+        } catch (InterruptedException | ExecutionException ex) {
+            Logger.getLogger(PagesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+                
+
         this.setUser(rs);
         
         this.reset();
@@ -100,6 +134,41 @@ public class PagesController implements Serializable{
         }
     }
     
+    public void viewListBarang(){
+        this.reset();
+        
+        this.home.setVisible(false);
+        this.about.setVisible(false);
+        this.dashboardadmin.setVisible(false);
+        this.dashboardpengirim.setVisible(false);
+        this.listBarang.setVisible(true);
+        this.addBarang.setVisible(false);
+        this.login.setVisible(false);
+    }
+    
+    public void viewAddBarang(){
+        this.reset();
+        
+        this.home.setVisible(false);
+        this.about.setVisible(false);
+        this.dashboardadmin.setVisible(false);
+        this.dashboardpengirim.setVisible(false);
+        this.listBarang.setVisible(false);
+        this.addBarang.setVisible(true);
+        this.login.setVisible(false);
+    }
+    
+    public void viewRegistration(){
+        this.reset();
+        
+        this.home.setVisible(false);
+        this.about.setVisible(false);
+        this.dashboardadmin.setVisible(false);
+        this.dashboardpengirim.setVisible(false);
+        this.login.setVisible(false);
+        this.regist.setVisible(true);
+    }
+
     
 //    Logic?
     
